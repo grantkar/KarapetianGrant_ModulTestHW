@@ -2,62 +2,74 @@ import java.util.Scanner;
 
 public class SimpleCalculator {
     static Scanner scanner = new Scanner(System.in);
+    static String number1;
+    static String number2;
 
     public static void main(String[] args) {
-        int num1 = getInt("num1");
-        int num2 = getInt("num2");
-        char operation = getOperation();
-        int result = calc(num1,num2,operation);
-        System.out.println("Результат операции: "+result);
-    }
 
-
-    public static int getInt(String str){
-        System.out.println("Введите число " + str + ":");
-        int num;
-        if(scanner.hasNextInt()){
-            num = scanner.nextInt();
-        } else {
-            System.out.println("Вы допустили ошибку при вводе числа. Попробуйте еще раз.");
-            scanner.next();
-            num = getInt(str);
+        System.out.println("Введите число num1 :");
+        number1 = scanner.next();
+        int num1 = 0;
+        int num2 = 0;
+        if (isNumeric(number1)) {
+            num1 = Integer.parseInt(number1);
         }
-        return num;
+
+        System.out.println("Введите число num2 :");
+        number2 = scanner.next();
+        if (isNumeric(number2)) {
+            num2 = Integer.parseInt(number2);
+        }
+
+        char operation = getOperation();
+
+        if (isOperation(operation)) {
+            int result = calc(num1, num2, operation);
+            System.out.println("Результат операции: " + result);
+        }
     }
 
-    public static char getOperation(){
+
+    public static boolean isNumeric(String str) throws NumberFormatException {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели не число, мы заменим его на '0'");
+            return false;
+        }
+    }
+
+    public static char getOperation() {
         System.out.println("Введите операцию:");
         char operation;
-        if(scanner.hasNext()){
-            operation = scanner.next().charAt(0);
-        } else {
-            System.out.println("Вы допустили ошибку при вводе операции. Попробуйте еще раз.");
-            scanner.next();
-            operation = getOperation();
-        }
+        operation = scanner.next().charAt(0);
         return operation;
     }
 
-    public static int calc(int num1, int num2, char operation) throws ArithmeticException{
-        int result;
-        switch (operation){
-            case '+':
-                result = num1+num2;
-                break;
-            case '-':
-                result = num1-num2;
-                break;
-            case '*':
-                result = num1*num2;
-                break;
-            case '/':
-                result = num1/num2;
-                break;
-            default:
-                System.out.println("Операция не распознана. Повторите ввод.");
-                result = calc(num1, num2, getOperation());
+    public static boolean isOperation(char symbol) {
+        if (symbol == '+' | symbol == '-' | symbol == '*' | symbol == '/') {
+            return true;
+        } else {
+            System.out.println("Недопустимый символ операций");
+            return false;
         }
-        return result;
+    }
+
+    public static int calc(int num1, int num2, char operation) throws ArithmeticException {
+        int result;
+        switch (operation) {
+            case '+':
+                return num1 + num2;
+            case '-':
+                return num1 - num2;
+            case '*':
+               return num1 * num2;
+
+            case '/':
+               return num1 / num2;
+        }
+        return 0;
     }
 
 }
